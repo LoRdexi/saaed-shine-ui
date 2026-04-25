@@ -14,6 +14,7 @@ import Profile from "./pages/Profile.tsx";
 import Martyrs from "./pages/Martyrs.tsx";
 import MartyrDetail from "./pages/MartyrDetail.tsx";
 import AddMartyr from "./pages/AddMartyr.tsx";
+import GeneralFund from "./pages/GeneralFund.tsx";
 import NotFound from "./pages/NotFound.tsx";
 
 const queryClient = new QueryClient();
@@ -57,6 +58,7 @@ const App = () => (
             <Route path="/martyrs" element={<Martyrs />} />
             <Route path="/martyrs/new" element={<AddMartyr />} />
             <Route path="/martyrs/:id" element={<MartyrDetail />} />
+            <Route path="/general-fund" element={<GeneralFund />} />
           </Route>
 
           <Route path="*" element={<NotFound />} />
