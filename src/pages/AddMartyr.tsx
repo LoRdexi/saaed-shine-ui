@@ -19,6 +19,7 @@ export default function AddMartyr() {
   const [hometown, setHometown] = useState("");
   const [role, setRole] = useState("");
   const [bio, setBio] = useState("");
+  const [martyrdomStory, setMartyrdomStory] = useState("");
   const [image, setImage] = useState("");
 
   const onSubmit = (e: React.FormEvent) => {
