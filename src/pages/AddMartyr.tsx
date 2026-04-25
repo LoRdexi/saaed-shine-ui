@@ -36,6 +36,7 @@ export default function AddMartyr() {
       hometown: hometown.trim() || undefined,
       role: role.trim() || undefined,
       image: image.trim() || undefined,
+      martyrdomStory: martyrdomStory.trim() || undefined,
     });
     toast.success("تم إضافة الشهيد إلى السجل", {
       description: "شكراً لمساهمتك في حفظ ذاكرتهم.",
