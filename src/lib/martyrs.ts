@@ -8,6 +8,7 @@ export interface Martyr {
   hometown?: string;
   role?: string; // e.g. "طالب جامعي", "مسعف", "أب لثلاثة أطفال"
   bio: string;
+  martyrdomStory?: string;
   image?: string;
   addedBy?: string;
   createdAt: number;
