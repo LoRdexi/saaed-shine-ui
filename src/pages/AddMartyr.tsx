@@ -19,6 +19,7 @@ export default function AddMartyr() {
   const [hometown, setHometown] = useState("");
   const [role, setRole] = useState("");
   const [bio, setBio] = useState("");
+  const [martyrdomStory, setMartyrdomStory] = useState("");
   const [image, setImage] = useState("");
 
   const onSubmit = (e: React.FormEvent) => {
@@ -35,6 +36,7 @@ export default function AddMartyr() {
       hometown: hometown.trim() || undefined,
       role: role.trim() || undefined,
       image: image.trim() || undefined,
+      martyrdomStory: martyrdomStory.trim() || undefined,
     });
     toast.success("تم إضافة الشهيد إلى السجل", {
       description: "شكراً لمساهمتك في حفظ ذاكرتهم.",
@@ -86,7 +88,16 @@ export default function AddMartyr() {
           <Textarea
             value={bio}
             onChange={(e) => setBio(e.target.value)}
-            placeholder="اكتب نبذة عن حياته، إنجازاته، وكيف ارتقى..."
+            placeholder="اكتب نبذة عن حياته، إنجازاته، وكيف عاش..."
+            rows={5}
+          />
+        </Field>
+
+        <Field label="قصة الاستشهاد">
+          <Textarea
+            value={martyrdomStory}
+            onChange={(e) => setMartyrdomStory(e.target.value)}
+            placeholder="اروِ كيف ارتقى شهيداً، تفاصيل اليوم الذي ارتقى فيه، وآخر مواقفه..."
             rows={6}
           />
         </Field>
