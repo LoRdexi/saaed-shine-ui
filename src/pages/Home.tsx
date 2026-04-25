@@ -1,35 +1,23 @@
-import { Link } from "react-router-dom";
-import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Bell, ChevronLeft, HandHeart, HeartPulse, MapPin, Plus, TrendingUp, Users } from "lucide-react";
+import { Bell, ChevronLeft, HandHeart, HeartPulse, MapPin, Plus, Sparkles, TrendingUp, Users, ShieldCheck, ArrowLeft } from "lucide-react";
 import { useMartyrs } from "@/lib/martyrs";
 import { useAppStore, useTotalDonatedToday, useTotalRaised } from "@/lib/store";
 import { formatCurrency, formatNumber } from "@/lib/format";
 import { cn } from "@/lib/utils";
-import { toast } from "sonner";
 import { CATEGORY_LABEL } from "@/lib/types";
 
-const QUICK_AMOUNTS = [10, 50, 100, 500];
-
 export default function Home() {
+  const navigate = useNavigate();
   const user = useAppStore((s) => s.user);
   const cases = useAppStore((s) => s.cases);
-  const donate = useAppStore((s) => s.donate);
   const totalDonors = useAppStore((s) => s.totalDonors);
   const totalRaised = useTotalRaised();
   const todayTotal = useTotalDonatedToday();
-  const [amount, setAmount] = useState(50);
   const urgent = cases.filter((c) => c.urgent).slice(0, 4);
   const supported = cases.filter((c) => c.raised > 0).length;
   const martyrs = useMartyrs((s) => s.martyrs);
-
-  const handleDonate = () => {
-    donate("general", amount);
-    toast.success(`تم التبرع بـ ${formatCurrency(amount)} للصندوق العام`, {
-      description: "شكراً لكرمك — ظهر تبرعك في شاشة الشفافية مباشرة.",
-    });
-  };
 
   return (
     <div className="pb-6">
@@ -45,38 +33,86 @@ export default function Home() {
         </button>
       </header>
 
-      {/* Hero donation card */}
+      {/* Hero — General Fund — premium tappable card */}
       <section className="px-5">
-        <div className="gradient-hero text-primary-foreground rounded-3xl p-5 shadow-elevated relative overflow-hidden">
-          <div className="absolute -top-8 -left-8 h-32 w-32 rounded-full bg-accent/20 blur-2xl" />
-          <div className="relative">
-            <Badge className="bg-accent text-accent-foreground border-0 mb-3">الصندوق العام</Badge>
-            <h2 className="text-xl font-bold">تبرع تصرفه ساعد حيث الحاجة الأكبر</h2>
-            <p className="text-sm text-primary-foreground/80 mt-1">اختر مبلغاً وابدأ خيرك الآن</p>
+        <button
+          onClick={() => navigate("/general-fund")}
+          className="w-full text-right group relative block overflow-hidden rounded-3xl shadow-elevated focus:outline-none focus:ring-2 focus:ring-accent/60"
+          aria-label="فتح صفحة الصندوق العام"
+        >
+          {/* Background layers */}
+          <div className="gradient-hero text-primary-foreground p-5 relative">
+            <div className="absolute -top-10 -left-10 h-40 w-40 rounded-full bg-accent/25 blur-3xl" />
+            <div className="absolute -bottom-12 -right-8 h-44 w-44 rounded-full bg-primary-foreground/10 blur-3xl" />
+            {/* Decorative pattern dots */}
+            <div className="absolute inset-0 opacity-[0.07]" style={{
+              backgroundImage: "radial-gradient(currentColor 1px, transparent 1px)",
+              backgroundSize: "16px 16px",
+            }} />
 
-            <div className="mt-4 grid grid-cols-4 gap-2">
-              {QUICK_AMOUNTS.map((a) => (
-                <button
-                  key={a}
-                  onClick={() => setAmount(a)}
-                  className={cn(
-                    "h-11 rounded-xl text-sm font-bold border transition-all",
-                    amount === a
-                      ? "bg-accent text-accent-foreground border-accent shadow-glow"
-                      : "bg-primary-foreground/10 border-primary-foreground/20 text-primary-foreground hover:bg-primary-foreground/15",
-                  )}
-                >
-                  {a}
-                </button>
-              ))}
+            <div className="relative">
+              {/* Top row: badge + live */}
+              <div className="flex items-center justify-between">
+                <div className="inline-flex items-center gap-1.5 bg-accent text-accent-foreground rounded-full px-3 py-1 text-[11px] font-extrabold shadow-glow">
+                  <Sparkles className="h-3 w-3" />
+                  الصندوق العام
+                </div>
+                <div className="inline-flex items-center gap-1.5 text-[10px] font-semibold text-primary-foreground/85">
+                  <span className="relative flex h-1.5 w-1.5">
+                    <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-accent opacity-75" />
+                    <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-accent" />
+                  </span>
+                  مباشر
+                </div>
+              </div>
+
+              {/* Headline */}
+              <h2 className="text-[22px] font-extrabold leading-tight mt-3">
+                تبرّع واحد <span className="text-accent">يصل لكل محتاج</span>
+              </h2>
+              <p className="text-xs text-primary-foreground/80 mt-1.5 leading-relaxed">
+                نوزّع تبرعك على الحالات الأكثر إلحاحاً لحظة وصوله.
+              </p>
+
+              {/* Today total panel */}
+              <div className="mt-4 bg-primary-foreground/10 backdrop-blur-md rounded-2xl border border-primary-foreground/20 p-3">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-[10px] text-primary-foreground/70">تبرعات اليوم</p>
+                    <p className="text-xl font-extrabold tabular-nums mt-0.5">
+                      {formatCurrency(todayTotal)}
+                    </p>
+                  </div>
+                  <div className="text-right">
+                    <p className="text-[10px] text-primary-foreground/70">المتبرعون</p>
+                    <p className="text-sm font-extrabold tabular-nums mt-0.5 inline-flex items-center gap-1">
+                      <Users className="h-3.5 w-3.5" />
+                      {formatNumber(totalDonors)}
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              {/* CTA row */}
+              <div className="mt-4 flex items-center justify-between bg-accent text-accent-foreground rounded-2xl px-4 py-3 shadow-glow group-hover:bg-accent/95 transition-colors">
+                <div className="flex items-center gap-2">
+                  <HandHeart className="h-5 w-5" />
+                  <span className="font-extrabold text-sm">تبرّع الآن</span>
+                </div>
+                <div className="flex items-center gap-1 text-xs font-bold">
+                  اعرف المزيد
+                  <ArrowLeft className="h-4 w-4 transition-transform group-hover:-translate-x-1" />
+                </div>
+              </div>
+
+              {/* Trust line */}
+              <div className="mt-3 flex items-center justify-center gap-1.5 text-[10px] text-primary-foreground/75">
+                <ShieldCheck className="h-3 w-3" />
+                موثَّق ومؤمَّن — كل ريال يظهر في سجل الشفافية
+              </div>
             </div>
-
-            <Button onClick={handleDonate} size="lg" className="w-full mt-4 h-12 rounded-2xl bg-accent text-accent-foreground hover:bg-accent/90 font-bold">
-              <HandHeart className="h-5 w-5" />
-              تبرع الآن بـ {formatCurrency(amount)}
-            </Button>
           </div>
-        </div>
+        </button>
       </section>
 
       {/* Stats */}
