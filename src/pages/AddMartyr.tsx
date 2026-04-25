@@ -88,7 +88,16 @@ export default function AddMartyr() {
           <Textarea
             value={bio}
             onChange={(e) => setBio(e.target.value)}
-            placeholder="اكتب نبذة عن حياته، إنجازاته، وكيف ارتقى..."
+            placeholder="اكتب نبذة عن حياته، إنجازاته، وكيف عاش..."
+            rows={5}
+          />
+        </Field>
+
+        <Field label="قصة الاستشهاد">
+          <Textarea
+            value={martyrdomStory}
+            onChange={(e) => setMartyrdomStory(e.target.value)}
+            placeholder="اروِ كيف ارتقى شهيداً، تفاصيل اليوم الذي ارتقى فيه، وآخر مواقفه..."
             rows={6}
           />
         </Field>
