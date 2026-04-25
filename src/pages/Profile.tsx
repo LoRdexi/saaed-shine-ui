@@ -9,7 +9,8 @@ import { toast } from "sonner";
 export default function Profile() {
   const user = useAppStore((s) => s.user);
   const logout = useAppStore((s) => s.logout);
-  const myDonations = useAppStore((s) => s.donations.filter((d) => d.isMine));
+  const donations = useAppStore((s) => s.donations);
+  const myDonations = donations.filter((d) => d.isMine);
   const myTotal = myDonations.reduce((s, d) => s + d.amount, 0);
   const navigate = useNavigate();
 

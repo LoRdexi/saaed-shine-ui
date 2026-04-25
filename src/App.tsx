@@ -11,6 +11,9 @@ import Cases from "./pages/Cases.tsx";
 import CaseDetail from "./pages/CaseDetail.tsx";
 import Transparency from "./pages/Transparency.tsx";
 import Profile from "./pages/Profile.tsx";
+import Martyrs from "./pages/Martyrs.tsx";
+import MartyrDetail from "./pages/MartyrDetail.tsx";
+import AddMartyr from "./pages/AddMartyr.tsx";
 import NotFound from "./pages/NotFound.tsx";
 
 const queryClient = new QueryClient();
@@ -51,6 +54,9 @@ const App = () => (
             <Route path="/case/:id" element={<CaseDetail />} />
             <Route path="/transparency" element={<Transparency />} />
             <Route path="/profile" element={<Profile />} />
+            <Route path="/martyrs" element={<Martyrs />} />
+            <Route path="/martyrs/new" element={<AddMartyr />} />
+            <Route path="/martyrs/:id" element={<MartyrDetail />} />
           </Route>
 
           <Route path="*" element={<NotFound />} />

@@ -2,7 +2,8 @@ import { Link } from "react-router-dom";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Bell, ChevronLeft, HandHeart, HeartPulse, TrendingUp, Users } from "lucide-react";
+import { Bell, ChevronLeft, HandHeart, HeartPulse, Plus, ScrollText, TrendingUp, Users } from "lucide-react";
+import { useMartyrs } from "@/lib/martyrs";
 import { useAppStore, useTotalDonatedToday, useTotalRaised } from "@/lib/store";
 import { formatCurrency, formatNumber } from "@/lib/format";
 import { cn } from "@/lib/utils";
@@ -21,6 +22,7 @@ export default function Home() {
   const [amount, setAmount] = useState(50);
   const urgent = cases.filter((c) => c.urgent).slice(0, 4);
   const supported = cases.filter((c) => c.raised > 0).length;
+  const martyrs = useMartyrs((s) => s.martyrs);
 
   const handleDonate = () => {
     donate("general", amount);
@@ -113,6 +115,50 @@ export default function Home() {
             </Link>
           ))}
         </div>
+      </section>
+
+      {/* Martyrs section */}
+      <section className="px-5 mt-7">
+        <div className="flex items-center justify-between mb-3">
+          <div>
+            <h3 className="font-bold text-foreground">سجل الشهداء</h3>
+            <p className="text-[11px] text-muted-foreground mt-0.5">نخلّد ذكراهم ونروي سيرتهم</p>
+          </div>
+          <Link to="/martyrs/new" className="text-xs font-semibold text-accent-foreground bg-accent rounded-full px-3 py-1.5 inline-flex items-center gap-1">
+            <Plus className="h-3.5 w-3.5" />
+            إضافة شهيد
+          </Link>
+        </div>
+        <Link
+          to="/martyrs"
+          className="block bg-surface rounded-2xl border border-border p-4 shadow-soft hover:shadow-elevated transition"
+        >
+          <div className="flex items-center gap-3">
+            <div className="flex -space-x-3 space-x-reverse">
+              {martyrs.slice(0, 4).map((m) => (
+                <div
+                  key={m.id}
+                  className="h-10 w-10 rounded-full ring-2 ring-surface overflow-hidden bg-muted"
+                >
+                  {m.image ? (
+                    <img src={m.image} alt="" className="h-full w-full object-cover" />
+                  ) : (
+                    <div className="h-full w-full gradient-primary" />
+                  )}
+                </div>
+              ))}
+            </div>
+            <div className="flex-1 min-w-0">
+              <p className="text-sm font-bold text-foreground">
+                {martyrs.length.toLocaleString("ar-EG")} شهيداً موثّقاً
+              </p>
+              <p className="text-[11px] text-muted-foreground mt-0.5">تصفّح سيرهم وملفاتهم الشخصية</p>
+            </div>
+            <span className="h-9 w-9 rounded-xl bg-primary/10 text-primary flex items-center justify-center">
+              <ScrollText className="h-4 w-4" />
+            </span>
+          </div>
+        </Link>
       </section>
 
       {/* Shortcuts */}
