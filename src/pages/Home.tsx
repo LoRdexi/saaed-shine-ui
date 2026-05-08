@@ -7,6 +7,7 @@ import { useAppStore, useTotalDonatedToday, useTotalRaised } from "@/lib/store";
 import { formatCurrency, formatNumber } from "@/lib/format";
 import { cn } from "@/lib/utils";
 import { CATEGORY_LABEL } from "@/lib/types";
+import { CaseCard } from "@/components/CaseCard";
 
 export default function Home() {
   const navigate = useNavigate();
@@ -201,66 +202,11 @@ export default function Home() {
           </Link>
         </div>
         <div className="mt-3 flex gap-3 overflow-x-auto no-scrollbar px-5 pb-2">
-          {urgent.map((c) => {
-            const pct = Math.min(100, Math.round((c.raised / c.goal) * 100));
-            return (
-              <Link
-                key={c.id}
-                to={`/case/${c.id}`}
-                className="shrink-0 w-[260px] bg-surface rounded-3xl border border-border overflow-hidden shadow-soft hover:shadow-elevated transition-all hover:-translate-y-0.5 group"
-              >
-                <div className="relative h-36 overflow-hidden bg-muted">
-                  <img
-                    src={c.image}
-                    alt={c.title}
-                    loading="lazy"
-                    className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
-                  />
-                  <div className="absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-black/70 to-transparent" />
-                  <Badge className="absolute top-2.5 right-2.5 bg-destructive text-destructive-foreground border-0 gap-1 shadow-soft">
-                    <span className="h-1.5 w-1.5 rounded-full bg-white animate-pulse" />
-                    عاجل
-                  </Badge>
-                  <div className="absolute top-2.5 left-2.5 bg-white/95 text-primary rounded-full px-2 py-0.5 text-[10px] font-bold">
-                    {CATEGORY_LABEL[c.category]}
-                  </div>
-                  <p className="absolute bottom-2.5 right-3 left-3 text-white font-extrabold text-sm leading-snug line-clamp-2 drop-shadow-md">
-                    {c.title}
-                  </p>
-                </div>
-
-                <div className="p-3 space-y-2.5">
-                  {/* Progress with label */}
-                  <div>
-                    <div className="flex items-center justify-between text-[11px] mb-1">
-                      <span className="font-extrabold text-accent-foreground bg-accent/15 rounded-full px-2 py-0.5">
-                        {pct}٪
-                      </span>
-                      <span className="text-muted-foreground">
-                        <span className="font-bold text-primary tabular-nums">{formatCurrency(c.raised)}</span>
-                        <span className="mx-1">/</span>
-                        <span className="tabular-nums">{formatCurrency(c.goal)}</span>
-                      </span>
-                    </div>
-                    <div className="h-1.5 bg-muted rounded-full overflow-hidden">
-                      <div
-                        className="h-full gradient-accent rounded-full transition-all duration-700"
-                        style={{ width: `${pct}%` }}
-                      />
-                    </div>
-                  </div>
-
-                  <Button
-                    size="sm"
-                    className="w-full h-9 rounded-xl bg-primary hover:bg-primary/90 font-bold gap-1.5 text-xs"
-                  >
-                    <HandHeart className="h-3.5 w-3.5" />
-                    تبرع الآن
-                  </Button>
-                </div>
-              </Link>
-            );
-          })}
+          {urgent.map((c) => (
+            <div key={c.id} className="shrink-0 w-[280px]">
+              <CaseCard c={c} compact />
+            </div>
+          ))}
         </div>
       </section>
 
