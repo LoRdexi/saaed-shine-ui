@@ -3,7 +3,7 @@ export function formatCurrency(n: number) {
 }
 
 export function formatNumber(n: number) {
-  return new Intl.NumberFormat("ar-SA", { maximumFractionDigits: 0 }).format(n);
+  return new Intl.NumberFormat("ar-SY", { maximumFractionDigits: 0 }).format(n);
 }
 
 export function timeAgo(ts: number) {
