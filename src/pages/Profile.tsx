@@ -1,9 +1,11 @@
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ScreenHeader } from "@/components/layout/ScreenHeader";
 import { Button } from "@/components/ui/button";
+import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { useAppStore } from "@/lib/store";
 import { formatCurrency, timeAgo } from "@/lib/format";
-import { ChevronLeft, HandHeart, LogOut, Mail, Shield, Sparkles } from "lucide-react";
+import { ChevronLeft, HandHeart, ListOrdered, LogOut, Mail, Shield, Sparkles } from "lucide-react";
 import { toast } from "sonner";
 
 export default function Profile() {
