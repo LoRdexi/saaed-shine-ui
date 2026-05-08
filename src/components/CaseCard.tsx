@@ -1,66 +1,67 @@
 import { Link } from "react-router-dom";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { CATEGORY_LABEL, type Case } from "@/lib/types";
+import { CATEGORY_LABEL, type Case, type CaseCategory } from "@/lib/types";
 import { formatCurrency } from "@/lib/format";
-import { HandHeart, Users } from "lucide-react";
+import { HandHeart, Users, Stethoscope, GraduationCap, HomeIcon, LifeBuoy } from "lucide-react";
+
+const CATEGORY_ICON: Record<CaseCategory, React.ElementType> = {
+  medical: Stethoscope,
+  education: GraduationCap,
+  family: HomeIcon,
+  relief: LifeBuoy,
+};
 
 export function CaseCard({ c }: { c: Case }) {
   const pct = Math.min(100, Math.round((c.raised / c.goal) * 100));
+  const Icon = CATEGORY_ICON[c.category];
 
   return (
     <Link
       to={`/case/${c.id}`}
       className="group block bg-surface rounded-3xl border border-border overflow-hidden shadow-soft hover:shadow-elevated transition-all hover:-translate-y-0.5"
     >
-      {/* Image with overlays */}
-      <div className="relative h-44 overflow-hidden bg-muted">
-        <img
-          src={c.image}
-          alt={c.title}
-          loading="lazy"
-          className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
-        />
-        {/* Bottom gradient for legibility */}
-        <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-black/65 via-black/20 to-transparent" />
-
-        {/* Top badges */}
-        <div className="absolute top-3 right-3 flex gap-1.5">
-          {c.urgent && (
-            <Badge className="bg-destructive text-destructive-foreground border-0 shadow-soft gap-1">
-              <span className="h-1.5 w-1.5 rounded-full bg-white animate-pulse" />
-              عاجل
-            </Badge>
-          )}
-          <Badge className="bg-white/95 text-primary border-0 font-bold">
-            {CATEGORY_LABEL[c.category]}
-          </Badge>
-        </div>
-
-        {/* Percentage chip */}
-        <div className="absolute top-3 left-3 bg-accent text-accent-foreground rounded-full px-2.5 py-1 text-[11px] font-extrabold shadow-glow">
-          {pct}٪
-        </div>
-
-        {/* Title overlay */}
-        <div className="absolute inset-x-0 bottom-0 p-4">
-          <h3 className="font-extrabold text-white text-base line-clamp-1 drop-shadow-md">{c.title}</h3>
-          {c.beneficiaries && (
-            <p className="text-[11px] text-white/85 mt-0.5 inline-flex items-center gap-1">
-              <Users className="h-3 w-3" />
-              {c.beneficiaries.toLocaleString("ar-EG")} مستفيد
-            </p>
-          )}
+      {/* Top strip */}
+      <div className="relative px-4 pt-4 pb-3 bg-gradient-to-bl from-primary/8 via-surface to-accent/5">
+        <div className="flex items-start gap-3">
+          <div className="h-12 w-12 rounded-2xl gradient-primary text-primary-foreground flex items-center justify-center shrink-0 shadow-soft">
+            <Icon className="h-6 w-6" />
+          </div>
+          <div className="flex-1 min-w-0">
+            <div className="flex items-center gap-1.5 flex-wrap mb-1">
+              <Badge className="bg-primary/10 text-primary border-0 font-bold text-[10px] h-5">
+                {CATEGORY_LABEL[c.category]}
+              </Badge>
+              {c.urgent && (
+                <Badge className="bg-destructive text-destructive-foreground border-0 gap-1 text-[10px] h-5">
+                  <span className="h-1.5 w-1.5 rounded-full bg-white animate-pulse" />
+                  عاجل
+                </Badge>
+              )}
+            </div>
+            <h3 className="font-extrabold text-foreground text-base leading-snug line-clamp-1">
+              {c.title}
+            </h3>
+          </div>
+          <div className="bg-accent text-accent-foreground rounded-full px-2.5 py-1 text-[11px] font-extrabold shadow-glow shrink-0">
+            {pct}٪
+          </div>
         </div>
       </div>
 
       {/* Body */}
-      <div className="p-4 space-y-3">
+      <div className="px-4 pb-4 pt-1 space-y-3">
         <p className="text-xs text-muted-foreground line-clamp-2 leading-relaxed">{c.shortDesc}</p>
 
-        {/* Custom progress bar */}
+        {c.beneficiaries && (
+          <p className="text-[11px] text-muted-foreground inline-flex items-center gap-1">
+            <Users className="h-3 w-3" />
+            {c.beneficiaries.toLocaleString("ar-EG")} مستفيد
+          </p>
+        )}
+
         <div className="space-y-1.5">
-          <div className="h-2 bg-muted rounded-full overflow-hidden relative">
+          <div className="h-2 bg-muted rounded-full overflow-hidden">
             <div
               className="h-full gradient-accent rounded-full transition-all duration-700"
               style={{ width: `${pct}%` }}

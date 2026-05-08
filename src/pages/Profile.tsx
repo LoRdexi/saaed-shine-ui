@@ -1,12 +1,15 @@
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ScreenHeader } from "@/components/layout/ScreenHeader";
 import { Button } from "@/components/ui/button";
+import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { useAppStore } from "@/lib/store";
 import { formatCurrency, timeAgo } from "@/lib/format";
-import { ChevronLeft, HandHeart, LogOut, Mail, Shield, Sparkles } from "lucide-react";
+import { ChevronLeft, HandHeart, ListOrdered, LogOut, Mail, Shield, Sparkles } from "lucide-react";
 import { toast } from "sonner";
 
 export default function Profile() {
+  const [logOpen, setLogOpen] = useState(false);
   const user = useAppStore((s) => s.user);
   const logout = useAppStore((s) => s.logout);
   const donations = useAppStore((s) => s.donations);
@@ -63,7 +66,30 @@ export default function Profile() {
             </Button>
           </div>
         ) : (
-          <ul className="space-y-2">
+          <button
+            onClick={() => setLogOpen(true)}
+            className="w-full bg-surface border border-border rounded-2xl p-4 flex items-center gap-3 hover:bg-muted transition"
+          >
+            <span className="h-10 w-10 rounded-xl bg-primary/10 text-primary flex items-center justify-center">
+              <ListOrdered className="h-5 w-5" />
+            </span>
+            <span className="flex-1 text-right">
+              <span className="block font-bold text-sm text-foreground">عرض سجل التبرعات</span>
+              <span className="block text-[11px] text-muted-foreground mt-0.5">
+                {myDonations.length} تبرع — {formatCurrency(myTotal)}
+              </span>
+            </span>
+            <ChevronLeft className="h-4 w-4 text-muted-foreground" />
+          </button>
+        )}
+      </section>
+
+      <Sheet open={logOpen} onOpenChange={setLogOpen}>
+        <SheetContent side="bottom" className="rounded-t-3xl max-h-[80vh] overflow-y-auto">
+          <SheetHeader>
+            <SheetTitle className="text-right">سجل تبرعاتي</SheetTitle>
+          </SheetHeader>
+          <ul className="space-y-2 mt-4 pb-6">
             {myDonations.map((d) => (
               <li key={d.id} className="bg-surface border border-border rounded-2xl p-3.5 flex items-center gap-3">
                 <div className="h-10 w-10 rounded-xl bg-accent/15 text-accent-foreground flex items-center justify-center">
@@ -77,8 +103,9 @@ export default function Profile() {
               </li>
             ))}
           </ul>
-        )}
-      </section>
+        </SheetContent>
+      </Sheet>
+
 
       <section className="px-5 pt-5 space-y-2">
         <Row icon={Shield} label="الخصوصية والشفافية" />

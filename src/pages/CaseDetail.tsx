@@ -7,9 +7,16 @@ import { ProgressBar } from "@/components/ProgressBar";
 import { useAppStore } from "@/lib/store";
 import { CATEGORY_LABEL } from "@/lib/types";
 import { formatCurrency, formatNumber } from "@/lib/format";
-import { HandHeart, Users } from "lucide-react";
+import { HandHeart, Users, Stethoscope, GraduationCap, Home as HomeIcon, LifeBuoy } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
+
+const CATEGORY_ICON = {
+  medical: Stethoscope,
+  education: GraduationCap,
+  family: HomeIcon,
+  relief: LifeBuoy,
+} as const;
 
 const AMOUNTS = [25, 50, 100, 200, 500, 1000];
 
@@ -36,26 +43,35 @@ export default function CaseDetail() {
     navigate("/transparency");
   };
 
+  const Icon = CATEGORY_ICON[c.category];
+
   return (
     <div className="pb-28">
       <ScreenHeader title={c.title} subtitle={CATEGORY_LABEL[c.category]} />
 
-      <div className="relative h-56 bg-muted overflow-hidden">
-        <img src={c.image} alt={c.title} className="h-full w-full object-cover" />
-        <div className="absolute inset-0 bg-gradient-to-t from-background/80 to-transparent" />
-        {c.urgent && (
-          <Badge className="absolute top-3 right-3 bg-destructive text-destructive-foreground border-0">
-            حالة عاجلة
-          </Badge>
-        )}
-      </div>
-
-      <div className="px-5 -mt-10 relative">
+      <div className="px-5 pt-4">
         <div className="bg-surface rounded-2xl border border-border shadow-elevated p-5 space-y-4">
-          <div>
-            <h2 className="text-xl font-extrabold text-foreground">{c.title}</h2>
-            <p className="text-sm text-muted-foreground mt-1 leading-relaxed">{c.story}</p>
+          <div className="flex items-start gap-3">
+            <div className="h-14 w-14 rounded-2xl gradient-primary text-primary-foreground flex items-center justify-center shrink-0 shadow-soft">
+              <Icon className="h-7 w-7" />
+            </div>
+            <div className="flex-1 min-w-0">
+              <div className="flex items-center gap-1.5 flex-wrap mb-1">
+                <Badge className="bg-primary/10 text-primary border-0 font-bold text-[10px] h-5">
+                  {CATEGORY_LABEL[c.category]}
+                </Badge>
+                {c.urgent && (
+                  <Badge className="bg-destructive text-destructive-foreground border-0 text-[10px] h-5">
+                    حالة عاجلة
+                  </Badge>
+                )}
+              </div>
+              <h2 className="text-xl font-extrabold text-foreground leading-snug">{c.title}</h2>
+            </div>
           </div>
+
+          <p className="text-sm text-muted-foreground leading-relaxed">{c.story}</p>
+
 
           <div className="grid grid-cols-2 gap-3 pt-2">
             <div className="bg-muted rounded-xl p-3">
