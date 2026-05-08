@@ -165,7 +165,7 @@ export default function GeneralFund() {
                 className="h-12 pr-4 pl-16 text-base font-bold rounded-xl"
               />
               <span className="absolute left-4 top-1/2 -translate-y-1/2 text-xs font-bold text-muted-foreground">
-                ر.س
+                ل.س
               </span>
             </div>
           </div>

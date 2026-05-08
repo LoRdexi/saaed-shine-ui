@@ -1,9 +1,9 @@
 export function formatCurrency(n: number) {
-  return new Intl.NumberFormat("ar-SA", { maximumFractionDigits: 0 }).format(n) + " ر.س";
+  return new Intl.NumberFormat("ar-SY", { maximumFractionDigits: 0 }).format(n) + " ل.س";
 }
 
 export function formatNumber(n: number) {
-  return new Intl.NumberFormat("ar-SA", { maximumFractionDigits: 0 }).format(n);
+  return new Intl.NumberFormat("ar-SY", { maximumFractionDigits: 0 }).format(n);
 }
 
 export function timeAgo(ts: number) {
