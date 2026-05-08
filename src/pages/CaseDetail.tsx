@@ -7,9 +7,16 @@ import { ProgressBar } from "@/components/ProgressBar";
 import { useAppStore } from "@/lib/store";
 import { CATEGORY_LABEL } from "@/lib/types";
 import { formatCurrency, formatNumber } from "@/lib/format";
-import { HandHeart, Users } from "lucide-react";
+import { HandHeart, Users, Stethoscope, GraduationCap, Home as HomeIcon, LifeBuoy } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
+
+const CATEGORY_ICON = {
+  medical: Stethoscope,
+  education: GraduationCap,
+  family: HomeIcon,
+  relief: LifeBuoy,
+} as const;
 
 const AMOUNTS = [25, 50, 100, 200, 500, 1000];
 
