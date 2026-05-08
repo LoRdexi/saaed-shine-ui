@@ -7,6 +7,7 @@ import { useAppStore, useTotalDonatedToday, useTotalRaised } from "@/lib/store";
 import { formatCurrency, formatNumber } from "@/lib/format";
 import { cn } from "@/lib/utils";
 import { CATEGORY_LABEL } from "@/lib/types";
+import { CaseCard } from "@/components/CaseCard";
 
 export default function Home() {
   const navigate = useNavigate();
