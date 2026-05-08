@@ -3,7 +3,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { CATEGORY_LABEL, type Case, type CaseCategory } from "@/lib/types";
 import { formatCurrency } from "@/lib/format";
-import { HandHeart, Users, Stethoscope, GraduationCap, HomeIcon, LifeBuoy } from "lucide-react";
+import { HandHeart, Users, Stethoscope, GraduationCap, Home as HomeIcon, LifeBuoy } from "lucide-react";
 
 const CATEGORY_ICON: Record<CaseCategory, React.ElementType> = {
   medical: Stethoscope,
@@ -12,24 +12,36 @@ const CATEGORY_ICON: Record<CaseCategory, React.ElementType> = {
   relief: LifeBuoy,
 };
 
-export function CaseCard({ c }: { c: Case }) {
+interface Props {
+  c: Case;
+  compact?: boolean;
+}
+
+export function CaseCard({ c, compact = false }: Props) {
   const pct = Math.min(100, Math.round((c.raised / c.goal) * 100));
   const Icon = CATEGORY_ICON[c.category];
+  // SVG circular progress
+  const R = 22;
+  const C = 2 * Math.PI * R;
+  const dash = (pct / 100) * C;
 
   return (
     <Link
       to={`/case/${c.id}`}
-      className="group block bg-surface rounded-3xl border border-border overflow-hidden shadow-soft hover:shadow-elevated transition-all hover:-translate-y-0.5"
+      className="group relative block bg-surface rounded-3xl border border-border shadow-soft hover:shadow-elevated transition-all hover:-translate-y-0.5 overflow-hidden"
     >
-      {/* Top strip */}
-      <div className="relative px-4 pt-4 pb-3 bg-gradient-to-bl from-primary/8 via-surface to-accent/5">
+      {/* Accent side bar */}
+      <span className="absolute top-0 right-0 h-full w-1.5 gradient-accent" />
+      {/* Soft tinted backdrop */}
+      <div className="absolute -top-16 -left-16 h-40 w-40 rounded-full bg-primary/5 blur-2xl pointer-events-none" />
+
+      <div className="relative p-4">
+        {/* Top row: badges + circular progress */}
         <div className="flex items-start gap-3">
-          <div className="h-12 w-12 rounded-2xl gradient-primary text-primary-foreground flex items-center justify-center shrink-0 shadow-soft">
-            <Icon className="h-6 w-6" />
-          </div>
           <div className="flex-1 min-w-0">
-            <div className="flex items-center gap-1.5 flex-wrap mb-1">
-              <Badge className="bg-primary/10 text-primary border-0 font-bold text-[10px] h-5">
+            <div className="flex flex-wrap items-center gap-1.5 mb-2">
+              <Badge className="bg-primary/10 text-primary border-0 font-bold text-[10px] h-5 gap-1">
+                <Icon className="h-3 w-3" />
                 {CATEGORY_LABEL[c.category]}
               </Badge>
               {c.urgent && (
@@ -39,45 +51,70 @@ export function CaseCard({ c }: { c: Case }) {
                 </Badge>
               )}
             </div>
-            <h3 className="font-extrabold text-foreground text-base leading-snug line-clamp-1">
+            <h3 className="font-extrabold text-foreground text-[15px] leading-snug line-clamp-2">
               {c.title}
             </h3>
+            {!compact && (
+              <p className="text-xs text-muted-foreground line-clamp-2 leading-relaxed mt-1.5">
+                {c.shortDesc}
+              </p>
+            )}
           </div>
-          <div className="bg-accent text-accent-foreground rounded-full px-2.5 py-1 text-[11px] font-extrabold shadow-glow shrink-0">
-            {pct}٪
-          </div>
-        </div>
-      </div>
 
-      {/* Body */}
-      <div className="px-4 pb-4 pt-1 space-y-3">
-        <p className="text-xs text-muted-foreground line-clamp-2 leading-relaxed">{c.shortDesc}</p>
-
-        {c.beneficiaries && (
-          <p className="text-[11px] text-muted-foreground inline-flex items-center gap-1">
-            <Users className="h-3 w-3" />
-            {c.beneficiaries.toLocaleString("ar-EG")} مستفيد
-          </p>
-        )}
-
-        <div className="space-y-1.5">
-          <div className="h-2 bg-muted rounded-full overflow-hidden">
-            <div
-              className="h-full gradient-accent rounded-full transition-all duration-700"
-              style={{ width: `${pct}%` }}
-            />
-          </div>
-          <div className="flex items-center justify-between text-[11px]">
-            <span className="font-bold text-primary tabular-nums">{formatCurrency(c.raised)}</span>
-            <span className="text-muted-foreground">
-              من <span className="font-semibold text-foreground tabular-nums">{formatCurrency(c.goal)}</span>
-            </span>
+          {/* Circular progress */}
+          <div className="relative shrink-0 h-14 w-14">
+            <svg viewBox="0 0 56 56" className="h-14 w-14 -rotate-90">
+              <circle cx="28" cy="28" r={R} className="fill-none stroke-muted" strokeWidth="5" />
+              <circle
+                cx="28"
+                cy="28"
+                r={R}
+                className="fill-none stroke-accent transition-all duration-700"
+                strokeWidth="5"
+                strokeLinecap="round"
+                strokeDasharray={`${dash} ${C}`}
+              />
+            </svg>
+            <div className="absolute inset-0 flex items-center justify-center">
+              <span className="text-[11px] font-extrabold text-foreground tabular-nums">{pct}٪</span>
+            </div>
           </div>
         </div>
 
+        {/* Stats row */}
+        <div className="mt-4 flex items-end justify-between gap-3">
+          <div>
+            <p className="text-[10px] text-muted-foreground">تم جمع</p>
+            <p className="font-extrabold text-primary tabular-nums leading-tight">
+              {formatCurrency(c.raised)}
+            </p>
+            <p className="text-[10px] text-muted-foreground tabular-nums mt-0.5">
+              من {formatCurrency(c.goal)}
+            </p>
+          </div>
+          {c.beneficiaries && (
+            <div className="text-left">
+              <p className="text-[10px] text-muted-foreground">المستفيدون</p>
+              <p className="text-sm font-extrabold text-foreground inline-flex items-center gap-1">
+                <Users className="h-3.5 w-3.5 text-accent-foreground" />
+                {c.beneficiaries.toLocaleString("ar-EG")}
+              </p>
+            </div>
+          )}
+        </div>
+
+        {/* Progress bar */}
+        <div className="mt-3 h-1.5 bg-muted rounded-full overflow-hidden">
+          <div
+            className="h-full gradient-accent rounded-full transition-all duration-700"
+            style={{ width: `${pct}%` }}
+          />
+        </div>
+
+        {/* CTA */}
         <Button
           size="sm"
-          className="w-full h-10 rounded-xl bg-primary hover:bg-primary/90 font-bold gap-1.5"
+          className="w-full h-10 rounded-xl bg-primary hover:bg-primary/90 font-bold gap-1.5 mt-3"
         >
           <HandHeart className="h-4 w-4" />
           تبرع الآن
