@@ -9,6 +9,7 @@ import { ChevronLeft, HandHeart, ListOrdered, LogOut, Mail, Shield, Sparkles } f
 import { toast } from "sonner";
 
 export default function Profile() {
+  const [logOpen, setLogOpen] = useState(false);
   const user = useAppStore((s) => s.user);
   const logout = useAppStore((s) => s.logout);
   const donations = useAppStore((s) => s.donations);
