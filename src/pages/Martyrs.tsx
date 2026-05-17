@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { ScreenHeader } from "@/components/layout/ScreenHeader";
 import { Button } from "@/components/ui/button";
 import { useMartyrs } from "@/lib/martyrs";
-import { Plus, MapPin, Flame } from "lucide-react";
+import { Plus, MapPin, Calendar } from "lucide-react";
 
 export default function Martyrs() {
   const martyrs = useMartyrs((s) => s.martyrs);
@@ -35,47 +35,63 @@ export default function Martyrs() {
       </section>
 
       <section className="px-5 pt-5 grid grid-cols-2 gap-3">
-        {martyrs.map((m) => (
-          <Link
-            key={m.id}
-            to={`/martyrs/${m.id}`}
-            className="group bg-surface rounded-2xl border border-border shadow-soft overflow-hidden hover:shadow-elevated hover:-translate-y-0.5 transition-all"
-          >
-            <div className="relative aspect-square bg-muted overflow-hidden">
-              {m.image ? (
-                <img
-                  src={m.image}
-                  alt={m.name}
-                  loading="lazy"
-                  className="h-full w-full object-cover group-hover:scale-105 transition-transform duration-500"
-                />
-              ) : (
-                <div className="h-full w-full gradient-primary flex items-center justify-center text-primary-foreground font-extrabold text-4xl">
-                  {m.name.charAt(0)}
-                </div>
-              )}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
-              <span className="absolute top-2 right-2 inline-flex items-center gap-1 bg-accent/95 text-accent-foreground rounded-full px-2 py-0.5 text-[10px] font-extrabold">
-                <Flame className="h-3 w-3" />
-                شهيد
-              </span>
-              <div className="absolute inset-x-0 bottom-0 p-2.5 text-white">
-                <p className="font-extrabold text-sm leading-tight line-clamp-2">{m.name}</p>
-                {m.hometown && (
-                  <p className="text-[10px] text-white/85 mt-1 inline-flex items-center gap-1">
-                    <MapPin className="h-3 w-3" />
-                    {m.hometown}
-                  </p>
+        {martyrs.map((m) => {
+          const year = m.martyrdomDate
+            ? new Date(m.martyrdomDate).getFullYear()
+            : null;
+          return (
+            <Link
+              key={m.id}
+              to={`/martyrs/${m.id}`}
+              className="group bg-surface rounded-xl border border-border shadow-soft overflow-hidden hover:shadow-elevated hover:-translate-y-0.5 transition-all flex flex-col"
+            >
+              {/* Square portrait */}
+              <div className="relative aspect-square bg-muted overflow-hidden border-b-2 border-accent">
+                {m.image ? (
+                  <img
+                    src={m.image}
+                    alt={m.name}
+                    loading="lazy"
+                    className="h-full w-full object-cover group-hover:scale-105 transition-transform duration-500"
+                  />
+                ) : (
+                  <div className="h-full w-full gradient-primary flex items-center justify-center text-primary-foreground font-extrabold text-4xl">
+                    {m.name.charAt(0)}
+                  </div>
                 )}
               </div>
-            </div>
-            {m.role && (
-              <p className="px-3 py-2 text-[11px] text-secondary font-semibold truncate">
-                {m.role}
-              </p>
-            )}
-          </Link>
-        ))}
+
+              {/* Formal info block below */}
+              <div className="p-3 bg-surface flex-1 flex flex-col">
+                <p className="text-[10px] text-accent font-bold tracking-widest uppercase">
+                  شهيد
+                </p>
+                <h3 className="font-extrabold text-sm text-foreground leading-snug mt-1 line-clamp-2 min-h-[2.5rem]">
+                  {m.name}
+                </h3>
+                {m.role && (
+                  <p className="text-[11px] text-muted-foreground mt-1 truncate">
+                    {m.role}
+                  </p>
+                )}
+                <div className="mt-2 pt-2 border-t border-border/70 flex items-center justify-between text-[10px] text-muted-foreground">
+                  {m.hometown && (
+                    <span className="inline-flex items-center gap-1 truncate">
+                      <MapPin className="h-3 w-3 text-primary" />
+                      {m.hometown}
+                    </span>
+                  )}
+                  {year && (
+                    <span className="inline-flex items-center gap-1 font-semibold text-foreground">
+                      <Calendar className="h-3 w-3 text-primary" />
+                      {year}
+                    </span>
+                  )}
+                </div>
+              </div>
+            </Link>
+          );
+        })}
       </section>
     </div>
   );

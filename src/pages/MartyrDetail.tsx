@@ -47,89 +47,76 @@ export default function MartyrDetail() {
 
   return (
     <div className="pb-10 bg-background">
-      {/* Hero — full bleed portrait */}
-      <div className="relative h-[420px] overflow-hidden">
-        {martyr.image ? (
-          <img
-            src={martyr.image}
-            alt={martyr.name}
-            className="h-full w-full object-cover"
-          />
-        ) : (
-          <div className="h-full w-full gradient-primary flex items-center justify-center text-primary-foreground font-extrabold text-7xl">
-            {martyr.name.charAt(0)}
-          </div>
-        )}
-
-        {/* Top dark fade for buttons legibility */}
-        <div className="absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-black/60 to-transparent" />
-        {/* Bottom dark fade for name */}
-        <div className="absolute inset-x-0 bottom-0 h-64 bg-gradient-to-t from-background via-background/70 to-transparent" />
-
-        {/* Top action bar */}
-        <div className="absolute inset-x-0 top-0 px-4 pt-4 flex items-center justify-between">
-          <Link
-            to="/martyrs"
-            className="h-10 w-10 rounded-full bg-black/40 backdrop-blur-md flex items-center justify-center text-white border border-white/20"
-            aria-label="رجوع"
-          >
-            <ArrowRight className="h-5 w-5" />
-          </Link>
-          <button
-            onClick={onShare}
-            className="h-10 w-10 rounded-full bg-black/40 backdrop-blur-md flex items-center justify-center text-white border border-white/20"
-            aria-label="مشاركة"
-          >
-            <Share2 className="h-4.5 w-4.5" />
-          </button>
-        </div>
-
-        {/* Martyr ribbon */}
-        <div className="absolute top-20 right-4 inline-flex items-center gap-1.5 bg-accent text-accent-foreground rounded-full px-3 py-1 text-[11px] font-extrabold shadow-glow">
-          <Flame className="h-3 w-3" />
-          شهيد
-        </div>
-
-        {/* Name overlay */}
-        <div className="absolute inset-x-0 bottom-0 px-5 pb-5">
-          <p className="text-xs text-accent font-semibold mb-1.5">
-            رحمه الله وتقبّله في الشهداء
-          </p>
-          <h1 className="text-2xl font-extrabold text-foreground leading-tight">
-            {martyr.name}
-          </h1>
-          {martyr.role && (
-            <p className="text-sm text-secondary mt-1.5 font-semibold">
-              {martyr.role}
-            </p>
-          )}
-        </div>
+      {/* Top action bar */}
+      <div className="sticky top-0 z-20 bg-background/90 backdrop-blur-md border-b border-border px-4 py-3 flex items-center justify-between">
+        <Link
+          to="/martyrs"
+          className="h-9 w-9 rounded-full bg-surface border border-border flex items-center justify-center text-foreground hover:bg-muted transition"
+          aria-label="رجوع"
+        >
+          <ArrowRight className="h-5 w-5" />
+        </Link>
+        <p className="text-xs font-bold text-primary">ملف شهيد</p>
+        <button
+          onClick={onShare}
+          className="h-9 w-9 rounded-full bg-surface border border-border flex items-center justify-center text-foreground hover:bg-muted transition"
+          aria-label="مشاركة"
+        >
+          <Share2 className="h-4 w-4" />
+        </button>
       </div>
 
-      {/* Quick facts strip */}
-      <section className="px-5 -mt-2">
-        <div className="bg-surface rounded-3xl border border-border shadow-elevated grid grid-cols-3 divide-x divide-x-reverse divide-border overflow-hidden">
-          <Fact
-            icon={Calendar}
-            label="الاستشهاد"
-            value={dateLabel.replace(/ /g, "\u00A0").split("\u00A0").slice(0, 2).join(" ")}
-          />
-          <Fact
-            icon={UserIcon}
-            label="العمر"
-            value={age !== undefined ? `${age} سنة` : "—"}
-          />
-          <Fact
-            icon={MapPin}
-            label="البلدة"
-            value={martyr.hometown || "—"}
-          />
+      {/* Formal portrait card */}
+      <section className="px-5 pt-5">
+        <div className="bg-surface rounded-2xl border border-border shadow-elevated overflow-hidden">
+          {/* Square portrait with accent frame */}
+          <div className="p-4 bg-gradient-to-b from-primary/5 to-transparent">
+            <div className="relative aspect-square w-full overflow-hidden rounded-xl border-2 border-accent shadow-soft">
+              {martyr.image ? (
+                <img
+                  src={martyr.image}
+                  alt={martyr.name}
+                  className="h-full w-full object-cover"
+                />
+              ) : (
+                <div className="h-full w-full gradient-primary flex items-center justify-center text-primary-foreground font-extrabold text-7xl">
+                  {martyr.name.charAt(0)}
+                </div>
+              )}
+              <span className="absolute top-3 right-3 inline-flex items-center gap-1.5 bg-accent text-accent-foreground rounded-full px-3 py-1 text-[11px] font-extrabold shadow-glow">
+                <Flame className="h-3 w-3" />
+                شهيد
+              </span>
+            </div>
+          </div>
+
+          {/* Identity block */}
+          <div className="px-5 pb-5 text-center">
+            <p className="text-[11px] text-accent font-bold tracking-widest uppercase">
+              رحمه الله وتقبّله في الشهداء
+            </p>
+            <h1 className="text-2xl font-extrabold text-foreground leading-tight mt-2">
+              {martyr.name}
+            </h1>
+            {martyr.role && (
+              <p className="text-sm text-muted-foreground mt-2 font-semibold">
+                {martyr.role}
+              </p>
+            )}
+
+            {/* Quick facts strip */}
+            <div className="mt-4 grid grid-cols-3 divide-x divide-x-reverse divide-border border border-border rounded-xl overflow-hidden bg-background">
+              <Fact icon={Calendar} label="الاستشهاد" value={String(new Date(martyr.martyrdomDate).getFullYear())} />
+              <Fact icon={UserIcon} label="العمر" value={age !== undefined ? `${age} سنة` : "—"} />
+              <Fact icon={MapPin} label="البلدة" value={martyr.hometown || "—"} />
+            </div>
+          </div>
         </div>
       </section>
 
       {/* Quote / dedication card */}
       <section className="px-5 mt-5">
-        <div className="relative gradient-hero text-primary-foreground rounded-3xl p-5 shadow-elevated overflow-hidden">
+        <div className="relative gradient-hero text-primary-foreground rounded-2xl p-5 shadow-elevated overflow-hidden">
           <Quote className="absolute -top-2 -left-2 h-20 w-20 text-primary-foreground/10" />
           <div className="relative">
             <p className="text-[11px] font-semibold text-accent">آية كريمة</p>
