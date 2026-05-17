@@ -6,15 +6,10 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { PhoneShell } from "@/components/layout/PhoneShell";
 import Splash from "./pages/Splash.tsx";
 import Auth from "./pages/Auth.tsx";
-import Home from "./pages/Home.tsx";
-import Cases from "./pages/Cases.tsx";
-import CaseDetail from "./pages/CaseDetail.tsx";
-import Transparency from "./pages/Transparency.tsx";
 import Profile from "./pages/Profile.tsx";
 import Martyrs from "./pages/Martyrs.tsx";
 import MartyrDetail from "./pages/MartyrDetail.tsx";
 import AddMartyr from "./pages/AddMartyr.tsx";
-import GeneralFund from "./pages/GeneralFund.tsx";
 import NotFound from "./pages/NotFound.tsx";
 
 const queryClient = new QueryClient();
@@ -26,7 +21,6 @@ const App = () => (
       <Sonner position="top-center" dir="rtl" />
       <BrowserRouter>
         <Routes>
-          {/* Standalone screens (no bottom nav) */}
           <Route
             path="/"
             element={
@@ -48,17 +42,11 @@ const App = () => (
             }
           />
 
-          {/* App shell with bottom nav */}
           <Route element={<PhoneShell />}>
-            <Route path="/home" element={<Home />} />
-            <Route path="/cases" element={<Cases />} />
-            <Route path="/case/:id" element={<CaseDetail />} />
-            <Route path="/transparency" element={<Transparency />} />
-            <Route path="/profile" element={<Profile />} />
             <Route path="/martyrs" element={<Martyrs />} />
             <Route path="/martyrs/new" element={<AddMartyr />} />
             <Route path="/martyrs/:id" element={<MartyrDetail />} />
-            <Route path="/general-fund" element={<GeneralFund />} />
+            <Route path="/profile" element={<Profile />} />
           </Route>
 
           <Route path="*" element={<NotFound />} />

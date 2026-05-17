@@ -22,7 +22,7 @@ export default function Auth() {
     const email = (data.get("email") as string) || "user@saaed.app";
     login({ name, email });
     toast.success(tab === "signup" ? "تم إنشاء حسابك بنجاح" : "أهلاً بعودتك");
-    navigate("/home", { replace: true });
+    navigate("/martyrs", { replace: true });
   };
 
   return (
@@ -31,7 +31,7 @@ export default function Auth() {
 
       <div className="mt-8 flex-1 animate-fade-in">
         <h1 className="text-2xl font-extrabold text-primary">مرحباً بك في ساعد</h1>
-        <p className="text-sm text-muted-foreground mt-1">سجّل دخولك لتتبرع وتتابع تبرعاتك</p>
+        <p className="text-sm text-muted-foreground mt-1">سجّل دخولك لتوثّق سير الشهداء وتساهم في حفظ ذاكرتهم</p>
 
         <Tabs value={tab} onValueChange={setTab} className="mt-6">
           <TabsList className="grid grid-cols-2 w-full bg-muted h-11 rounded-2xl p-1">
@@ -51,7 +51,7 @@ export default function Auth() {
               {tab === "signup" ? "إنشاء حساب" : "دخول"}
             </Button>
 
-            <Link to="/home" className="block text-center text-sm text-secondary hover:text-primary py-2 font-medium">
+            <Link to="/martyrs" className="block text-center text-sm text-secondary hover:text-primary py-2 font-medium">
               متابعة كزائر
             </Link>
           </form>
