@@ -2,88 +2,83 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Saaed design system — Arabic charity app
-   Colors derived from brand palette, all HSL.
-   Navy #064789, Navy2 #427aa1, White #ebf2fa, Green #A5be00,
-   Black #555, Text #888, Border #edf1f5
+/* Saaed — Martyr documentation app
+   Primary: deep forest green
+   Secondary: warm gold
 */
 
 @layer base {
   :root {
-    --background: 210 56% 95%;          /* #ebf2fa */
+    --background: 60 20% 97%;            /* warm off-white */
     --surface: 0 0% 100%;
-    --foreground: 0 0% 33%;             /* #555 */
+    --foreground: 160 25% 12%;           /* deep green-black */
 
     --card: 0 0% 100%;
-    --card-foreground: 0 0% 33%;
+    --card-foreground: 160 25% 12%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 0 0% 33%;
+    --popover-foreground: 160 25% 12%;
 
-    --primary: 211 92% 28%;             /* #064789 */
-    --primary-foreground: 210 56% 97%;
-    --primary-glow: 207 41% 45%;        /* #427aa1 */
+    --primary: 158 60% 18%;              /* #134b3a forest green */
+    --primary-foreground: 45 50% 96%;
+    --primary-glow: 158 45% 32%;
 
-    --secondary: 207 41% 45%;           /* #427aa1 */
-    --secondary-foreground: 0 0% 100%;
+    --secondary: 40 55% 52%;             /* gold */
+    --secondary-foreground: 158 60% 12%;
 
-    --muted: 210 30% 96%;
-    --muted-foreground: 0 0% 53%;       /* #888 */
+    --muted: 45 25% 94%;
+    --muted-foreground: 160 12% 38%;
 
-    --accent: 70 100% 37%;              /* #A5be00 */
-    --accent-foreground: 211 92% 18%;
+    --accent: 40 65% 55%;                /* gold accent */
+    --accent-foreground: 158 60% 12%;
 
-    --success: 70 100% 37%;
+    --success: 158 55% 35%;
     --success-foreground: 0 0% 100%;
 
-    --destructive: 0 75% 55%;
+    --destructive: 0 70% 45%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 210 30% 92%;              /* #edf1f5 */
-    --input: 210 30% 92%;
-    --ring: 211 92% 28%;
+    --border: 45 15% 88%;
+    --input: 45 15% 88%;
+    --ring: 158 60% 18%;
 
     --radius: 1rem;
 
-    --gradient-primary: linear-gradient(135deg, hsl(211 92% 28%), hsl(207 41% 45%));
-    --gradient-accent: linear-gradient(135deg, hsl(70 100% 37%), hsl(75 90% 45%));
-    --gradient-hero: linear-gradient(160deg, hsl(211 92% 28%) 0%, hsl(207 41% 38%) 100%);
+    --gradient-primary: linear-gradient(135deg, hsl(158 60% 18%), hsl(158 45% 28%));
+    --gradient-accent: linear-gradient(135deg, hsl(40 65% 55%), hsl(38 75% 62%));
+    --gradient-hero: linear-gradient(160deg, hsl(158 60% 14%) 0%, hsl(158 50% 22%) 60%, hsl(40 55% 30%) 100%);
 
-    --shadow-soft: 0 4px 20px -4px hsl(211 92% 28% / 0.12);
-    --shadow-elevated: 0 12px 32px -8px hsl(211 92% 28% / 0.25);
-    --shadow-glow: 0 0 32px hsl(70 100% 37% / 0.35);
+    --shadow-soft: 0 4px 20px -4px hsl(158 60% 18% / 0.15);
+    --shadow-elevated: 0 14px 36px -10px hsl(158 60% 18% / 0.28);
+    --shadow-glow: 0 0 32px hsl(40 65% 55% / 0.4);
   }
 
   .dark {
-    --background: 211 40% 8%;
-    --surface: 211 40% 12%;
-    --foreground: 210 40% 96%;
-    --card: 211 40% 12%;
-    --card-foreground: 210 40% 96%;
-    --popover: 211 40% 12%;
-    --popover-foreground: 210 40% 96%;
-    --primary: 207 60% 60%;
-    --primary-foreground: 211 40% 8%;
-    --secondary: 207 41% 45%;
-    --secondary-foreground: 0 0% 100%;
-    --muted: 211 30% 18%;
-    --muted-foreground: 210 20% 70%;
-    --accent: 70 100% 45%;
-    --accent-foreground: 211 92% 12%;
-    --border: 211 30% 20%;
-    --input: 211 30% 20%;
-    --ring: 207 60% 60%;
+    --background: 158 30% 8%;
+    --surface: 158 28% 12%;
+    --foreground: 45 40% 94%;
+    --card: 158 28% 12%;
+    --card-foreground: 45 40% 94%;
+    --popover: 158 28% 12%;
+    --popover-foreground: 45 40% 94%;
+    --primary: 40 65% 58%;
+    --primary-foreground: 158 60% 10%;
+    --secondary: 158 40% 30%;
+    --secondary-foreground: 45 40% 94%;
+    --muted: 158 25% 16%;
+    --muted-foreground: 45 15% 70%;
+    --accent: 40 70% 60%;
+    --accent-foreground: 158 60% 10%;
+    --border: 158 25% 20%;
+    --input: 158 25% 20%;
+    --ring: 40 65% 58%;
   }
 }
 
 @layer base {
-  * {
-    @apply border-border;
-  }
+  * { @apply border-border; }
 
-  html, body, #root {
-    height: 100%;
-  }
+  html, body, #root { height: 100%; }
 
   body {
     @apply bg-muted text-foreground;
@@ -109,25 +104,4 @@
   .shadow-soft { box-shadow: var(--shadow-soft); }
   .shadow-elevated { box-shadow: var(--shadow-elevated); }
   .shadow-glow { box-shadow: var(--shadow-glow); }
-
-  .live-pulse {
-    box-shadow: 0 0 0 0 hsl(var(--accent) / 0.7);
-    animation: live-pulse 1.6s infinite;
-  }
-
-  .ticker-flash {
-    animation: ticker-flash 1.4s ease-out;
-  }
-}
-
-@keyframes live-pulse {
-  0%   { box-shadow: 0 0 0 0 hsl(var(--accent) / 0.6); }
-  70%  { box-shadow: 0 0 0 10px hsl(var(--accent) / 0); }
-  100% { box-shadow: 0 0 0 0 hsl(var(--accent) / 0); }
-}
-
-@keyframes ticker-flash {
-  0%   { background-color: hsl(var(--accent) / 0.25); transform: translateY(-6px); opacity: 0; }
-  20%  { opacity: 1; transform: translateY(0); }
-  100% { background-color: transparent; }
 }

@@ -1,20 +1,14 @@
-import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ScreenHeader } from "@/components/layout/ScreenHeader";
-import { Button } from "@/components/ui/button";
-import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { useAppStore } from "@/lib/store";
-import { formatCurrency, timeAgo } from "@/lib/format";
-import { ChevronLeft, HandHeart, ListOrdered, LogOut, Mail, Shield, Sparkles } from "lucide-react";
+import { useMartyrs } from "@/lib/martyrs";
+import { ChevronLeft, LogOut, Mail, Shield, BookOpen } from "lucide-react";
 import { toast } from "sonner";
 
 export default function Profile() {
-  const [logOpen, setLogOpen] = useState(false);
   const user = useAppStore((s) => s.user);
   const logout = useAppStore((s) => s.logout);
-  const donations = useAppStore((s) => s.donations);
-  const myDonations = donations.filter((d) => d.isMine);
-  const myTotal = myDonations.reduce((s, d) => s + d.amount, 0);
+  const totalMartyrs = useMartyrs((s) => s.martyrs.length);
   const navigate = useNavigate();
 
   const handleLogout = () => {
@@ -44,70 +38,17 @@ export default function Profile() {
 
       <section className="px-5 pt-4 grid grid-cols-2 gap-3">
         <div className="bg-surface rounded-2xl border border-border p-4 shadow-soft">
-          <p className="text-[11px] text-muted-foreground">إجمالي تبرعاتي</p>
-          <p className="font-extrabold text-primary text-lg mt-1">{formatCurrency(myTotal)}</p>
+          <p className="text-[11px] text-muted-foreground">شهداء موثّقون</p>
+          <p className="font-extrabold text-primary text-lg mt-1">{totalMartyrs}</p>
         </div>
         <div className="bg-surface rounded-2xl border border-border p-4 shadow-soft">
-          <p className="text-[11px] text-muted-foreground">عدد التبرعات</p>
-          <p className="font-extrabold text-foreground text-lg mt-1">{myDonations.length}</p>
+          <p className="text-[11px] text-muted-foreground">مساهماتي</p>
+          <p className="font-extrabold text-foreground text-lg mt-1">0</p>
         </div>
       </section>
 
-      <section className="px-5 pt-5">
-        <h3 className="text-sm font-bold text-foreground mb-2">سجل تبرعاتي</h3>
-        {myDonations.length === 0 ? (
-          <div className="bg-surface border border-dashed border-border rounded-2xl p-6 text-center">
-            <Sparkles className="h-8 w-8 mx-auto text-accent" />
-            <p className="text-sm font-semibold text-foreground mt-2">لم تتبرع بعد</p>
-            <p className="text-xs text-muted-foreground mt-1">ابدأ بدعم حالة أو تبرع للصندوق العام</p>
-            <Button onClick={() => navigate("/cases")} className="mt-4 rounded-full bg-primary">
-              <HandHeart className="h-4 w-4" />
-              تصفح الحالات
-            </Button>
-          </div>
-        ) : (
-          <button
-            onClick={() => setLogOpen(true)}
-            className="w-full bg-surface border border-border rounded-2xl p-4 flex items-center gap-3 hover:bg-muted transition"
-          >
-            <span className="h-10 w-10 rounded-xl bg-primary/10 text-primary flex items-center justify-center">
-              <ListOrdered className="h-5 w-5" />
-            </span>
-            <span className="flex-1 text-right">
-              <span className="block font-bold text-sm text-foreground">عرض سجل التبرعات</span>
-              <span className="block text-[11px] text-muted-foreground mt-0.5">
-                {myDonations.length} تبرع — {formatCurrency(myTotal)}
-              </span>
-            </span>
-            <ChevronLeft className="h-4 w-4 text-muted-foreground" />
-          </button>
-        )}
-      </section>
-
-      <Sheet open={logOpen} onOpenChange={setLogOpen}>
-        <SheetContent side="bottom" className="rounded-t-3xl max-h-[80vh] overflow-y-auto">
-          <SheetHeader>
-            <SheetTitle className="text-right">سجل تبرعاتي</SheetTitle>
-          </SheetHeader>
-          <ul className="space-y-2 mt-4 pb-6">
-            {myDonations.map((d) => (
-              <li key={d.id} className="bg-surface border border-border rounded-2xl p-3.5 flex items-center gap-3">
-                <div className="h-10 w-10 rounded-xl bg-accent/15 text-accent-foreground flex items-center justify-center">
-                  <HandHeart className="h-5 w-5" />
-                </div>
-                <div className="flex-1 min-w-0">
-                  <p className="text-sm font-bold text-foreground truncate">{d.caseTitle}</p>
-                  <p className="text-[11px] text-muted-foreground">{timeAgo(d.timestamp)}</p>
-                </div>
-                <p className="font-extrabold text-primary tabular-nums">{formatCurrency(d.amount)}</p>
-              </li>
-            ))}
-          </ul>
-        </SheetContent>
-      </Sheet>
-
-
       <section className="px-5 pt-5 space-y-2">
+        <Row icon={BookOpen} label="عن المشروع" />
         <Row icon={Shield} label="الخصوصية والشفافية" />
         <Row icon={Mail} label="تواصل معنا" />
         <button

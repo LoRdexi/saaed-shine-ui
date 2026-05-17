@@ -1,4 +1,4 @@
-import { Heart } from "lucide-react";
+import { Flame } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 export function Logo({ className, size = "md" }: { className?: string; size?: "sm" | "md" | "lg" }) {
@@ -16,7 +16,7 @@ export function Logo({ className, size = "md" }: { className?: string; size?: "s
           sizes.box,
         )}
       >
-        <Heart className={cn("text-accent fill-accent", sizes.icon)} />
+        <Flame className={cn("text-accent fill-accent/40", sizes.icon)} />
       </div>
       <span className={cn("font-extrabold text-primary tracking-tight", sizes.text)}>ساعد</span>
     </div>
